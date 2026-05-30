@@ -12,8 +12,8 @@ from telegram.ext import Application, CommandHandler, CallbackQueryHandler, Cont
 from database import init_db, get_or_create_user, claim_bonus, get_stats
 
 # ══════════════════════════════════════════════════════════════
-BOT_TOKEN  = "ВАШ_ТОКЕН_ВІД_BOTFATHER"
-WEBAPP_URL = "https://ВАШ_СЕРВЕР.up.railway.app"
+BOT_TOKEN  = "8664990924:AAEWWQRd6Yy5_8fxc_PATVE4vQtXJd9hSb0"
+WEBAPP_URL = "https://web-production-a8c24.up.railway.app"
 # ══════════════════════════════════════════════════════════════
 
 logging.basicConfig(level=logging.INFO)
