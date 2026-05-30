@@ -1,6 +1,7 @@
-fastapi
+fastapi==0.100.0
 uvicorn
 aiosqlite
 aiogram==3.4.1
 httpx==0.25.2
 websockets
+pydantic==1.10.13
