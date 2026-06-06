@@ -7,81 +7,39 @@
 <script src="https://telegram.org/js/telegram-web-app.js"></script>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
 <style>
-:root {
-  --bg:        #0a0a0f;
-  --bg2:       #111118;
-  --bg3:       #1a1a25;
-  --border:    rgba(255,255,255,0.08);
-  --gold:      #d4a843;
-  --gold2:     #f0c860;
-  --cream:     #f0e8d8;
-  --green:     #22c55e;
-  --red:       #ef4444;
-  --blue:      #3b82f6;
-  --purple:    #8b5cf6;
-  --radius:    14px;
-  --font:      'Inter', sans-serif;
-  --font2:     'Playfair Display', serif;
-}
+:root{--bg:#0a0a0f;--bg2:#111118;--bg3:#1a1a25;--border:rgba(255,255,255,0.08);--gold:#d4a843;--gold2:#f0c860;--cream:#f0e8d8;--green:#22c55e;--red:#ef4444;--blue:#3b82f6;--radius:14px;--font:'Inter',sans-serif;--font2:'Playfair Display',serif}
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{min-height:100%;background:var(--bg);color:var(--cream);font-family:var(--font);overflow-x:hidden}
 button{cursor:pointer;border:none;font-family:var(--font)}
-
-/* ── SCREENS ── */
-.screen{display:none;min-height:100vh;flex-direction:column}
-.screen.active{display:flex}
-
-/* ── HEADER ── */
-.header{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20;backdrop-filter:blur(10px)}
-.logo{font-family:var(--font2);font-size:20px;font-weight:900;color:var(--gold)}
-.logo span{color:var(--cream)}
-.balance-chip{background:rgba(212,168,67,0.12);border:1px solid rgba(212,168,67,0.3);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--gold2);display:flex;align-items:center;gap:6px}
-
-/* ── LOBBY ── */
+.screen{display:none;min-height:100vh;flex-direction:column}.screen.active{display:flex}
+.header{padding:14px 16px 10px;display:flex;justify-content:space-between;align-items:center;border-bottom:1px solid var(--border);position:sticky;top:0;background:var(--bg);z-index:20}
+.logo{font-family:var(--font2);font-size:20px;font-weight:900;color:var(--gold)}.logo span{color:var(--cream)}
+.balance-chip{background:rgba(212,168,67,.12);border:1px solid rgba(212,168,67,.3);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:600;color:var(--gold2);display:flex;align-items:center;gap:6px}
+/* LOBBY */
 .lobby-body{flex:1;padding:16px;display:flex;flex-direction:column;gap:20px}
-
-.user-card{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid rgba(212,168,67,0.2);border-radius:var(--radius);padding:16px;display:flex;justify-content:space-between;align-items:center}
-.user-info h3{font-size:16px;font-weight:600;color:var(--cream);margin-bottom:2px}
-.user-info p{font-size:12px;color:rgba(240,232,216,0.5)}
-.balance-big{text-align:right}
-.balance-big .amount{font-family:var(--font2);font-size:26px;font-weight:700;color:var(--gold2)}
-.balance-big .label{font-size:11px;color:rgba(240,232,216,0.4);text-align:right}
-
-.section-title{font-size:13px;font-weight:600;letter-spacing:0.08em;text-transform:uppercase;color:rgba(240,232,216,0.4);margin-bottom:10px}
-
+.user-card{background:linear-gradient(135deg,#1a1a2e,#16213e);border:1px solid rgba(212,168,67,.2);border-radius:var(--radius);padding:16px;display:flex;justify-content:space-between;align-items:center}
+.user-info h3{font-size:16px;font-weight:600;margin-bottom:2px}.user-info p{font-size:12px;color:rgba(240,232,216,.5)}
+.balance-big .amount{font-family:var(--font2);font-size:26px;font-weight:700;color:var(--gold2)}.balance-big .label{font-size:11px;color:rgba(240,232,216,.4);text-align:right}
+.section-title{font-size:13px;font-weight:600;letter-spacing:.08em;text-transform:uppercase;color:rgba(240,232,216,.4);margin-bottom:10px}
 .games-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-
-.game-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:transform 0.15s,border-color 0.15s;cursor:pointer}
-.game-card:active{transform:scale(0.97)}
-.game-card.available{border-color:rgba(212,168,67,0.25)}
-.game-card.available:hover{border-color:rgba(212,168,67,0.5)}
-.game-card.soon{opacity:0.5;cursor:default}
-.game-card .icon{font-size:28px;line-height:1}
-.game-card .name{font-size:14px;font-weight:600;color:var(--cream)}
-.game-card .desc{font-size:11px;color:rgba(240,232,216,0.4)}
-.badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:600;padding:2px 6px;border-radius:8px;letter-spacing:0.05em;text-transform:uppercase}
-.badge.live{background:rgba(34,197,94,0.2);color:var(--green);border:1px solid rgba(34,197,94,0.3)}
-.badge.soon{background:rgba(255,255,255,0.08);color:rgba(240,232,216,0.4);border:1px solid var(--border)}
-
-.bonus-card{background:linear-gradient(135deg,#1a2a1a,#0f1f0f);border:1px solid rgba(34,197,94,0.25);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer;transition:border-color 0.15s}
-.bonus-card:active{transform:scale(0.98)}
-.bonus-left h4{font-size:14px;font-weight:600;color:var(--green);margin-bottom:2px}
-.bonus-left p{font-size:11px;color:rgba(240,232,216,0.4)}
+.game-card{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:16px 12px;display:flex;flex-direction:column;gap:8px;position:relative;overflow:hidden;transition:transform .15s,border-color .15s;cursor:pointer}
+.game-card:active{transform:scale(.97)}.game-card.available{border-color:rgba(212,168,67,.25)}
+.game-card.soon{opacity:.5;cursor:default}
+.game-card .icon{font-size:28px}.game-card .name{font-size:14px;font-weight:600}.game-card .desc{font-size:11px;color:rgba(240,232,216,.4)}
+.badge{position:absolute;top:10px;right:10px;font-size:9px;font-weight:600;padding:2px 6px;border-radius:8px;text-transform:uppercase}
+.badge.live{background:rgba(34,197,94,.2);color:var(--green);border:1px solid rgba(34,197,94,.3)}
+.badge.soon-b{background:rgba(255,255,255,.08);color:rgba(240,232,216,.4);border:1px solid var(--border)}
+.bonus-card{background:linear-gradient(135deg,#1a2a1a,#0f1f0f);border:1px solid rgba(34,197,94,.25);border-radius:var(--radius);padding:14px 16px;display:flex;justify-content:space-between;align-items:center;cursor:pointer}
+.bonus-card:active{transform:scale(.98)}.bonus-left h4{font-size:14px;font-weight:600;color:var(--green);margin-bottom:2px}.bonus-left p{font-size:11px;color:rgba(240,232,216,.4)}
 .bonus-btn{background:var(--green);color:#fff;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:600}
-
-/* ── BLACKJACK SCREEN ── */
+/* BLACKJACK */
 .bj-body{flex:1;display:flex;flex-direction:column;padding:12px;gap:10px;background:radial-gradient(ellipse at top,#0d3b1e 0%,var(--bg) 60%)}
-
 .bj-header{display:flex;align-items:center;gap:12px;padding:10px 0 4px}
-.back-btn{width:36px;height:36px;background:rgba(255,255,255,0.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:1px solid var(--border)}
-.bj-title{font-family:var(--font2);font-size:20px;font-weight:900;color:var(--gold)}
-.bj-balance{margin-left:auto;font-size:13px;color:var(--gold2);font-weight:600}
-
-/* Zones */
-.zone{background:rgba(0,0,0,0.25);border:1px solid rgba(212,168,67,0.15);border-radius:12px;padding:10px 12px}
-.zone-label{font-size:10px;letter-spacing:0.12em;text-transform:uppercase;color:rgba(212,168,67,0.4);margin-bottom:8px;display:flex;justify-content:space-between}
+.back-btn{width:36px;height:36px;background:rgba(255,255,255,.08);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;cursor:pointer;border:1px solid var(--border)}
+.bj-title{font-family:var(--font2);font-size:20px;font-weight:900;color:var(--gold)}.bj-balance{margin-left:auto;font-size:13px;color:var(--gold2);font-weight:600}
+.zone{background:rgba(0,0,0,.25);border:1px solid rgba(212,168,67,.15);border-radius:12px;padding:10px 12px}
+.zone-label{font-size:10px;letter-spacing:.12em;text-transform:uppercase;color:rgba(212,168,67,.4);margin-bottom:8px;display:flex;justify-content:space-between}
 .zone-label .score{color:var(--gold2);font-weight:600;font-size:12px}
-
 .cards-row{display:flex;flex-wrap:wrap;gap:6px;min-height:72px;align-items:flex-end}
 .card{width:48px;height:70px;background:#fff;border-radius:6px;border:1px solid rgba(0,0,0,.1);display:flex;flex-direction:column;justify-content:space-between;padding:3px 4px;font-family:var(--font2);font-weight:700;font-size:14px;box-shadow:0 3px 8px rgba(0,0,0,.4);animation:dealIn .2s cubic-bezier(.34,1.56,.64,1) both;flex-shrink:0}
 @keyframes dealIn{from{transform:scale(.4) translateY(-20px);opacity:0}to{transform:scale(1);opacity:1}}
@@ -89,64 +47,51 @@ button{cursor:pointer;border:none;font-family:var(--font)}
 .card .ct{font-size:10px;line-height:1.2}.card .cs{text-align:center;font-size:18px;line-height:1}.card .cb{font-size:10px;line-height:1.2;transform:rotate(180deg)}
 .card.back{background:repeating-linear-gradient(135deg,#1e3a8a 0 4px,#1d4ed8 4px 8px);border-color:#2563eb;position:relative}
 .card.back::after{content:'🂠';font-size:34px;position:absolute;inset:0;display:flex;align-items:center;justify-content:center}
-
-/* Message */
 .bj-message{text-align:center;min-height:40px;display:flex;align-items:center;justify-content:center}
 .bj-msg{font-family:var(--font2);font-size:20px;font-weight:900;animation:popIn .3s cubic-bezier(.34,1.56,.64,1)}
 @keyframes popIn{from{transform:scale(.5);opacity:0}to{transform:scale(1);opacity:1}}
 .bj-msg.win{color:var(--green)}.bj-msg.lose{color:var(--red)}.bj-msg.draw{color:var(--gold2)}.bj-msg.bj{color:var(--gold);font-size:24px}
-
-/* Bottom */
-.bj-bottom{background:rgba(0,0,0,0.4);border-top:1px solid var(--border);padding:12px;border-radius:14px;display:flex;flex-direction:column;gap:10px}
-
+.bj-bottom{background:rgba(0,0,0,.4);border-top:1px solid var(--border);padding:12px;border-radius:14px;display:flex;flex-direction:column;gap:10px}
 .chips{display:flex;gap:8px;justify-content:center}
-.chip{width:50px;height:50px;border-radius:50%;font-size:12px;font-weight:600;color:#fff;border:3px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;position:relative;font-family:'Inter',sans-serif}
+.chip{width:50px;height:50px;border-radius:50%;font-size:12px;font-weight:600;color:#fff;border:3px dashed rgba(255,255,255,.5);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:transform .12s;position:relative;font-family:var(--font)}
 .chip::after{content:'';position:absolute;inset:4px;border-radius:50%;border:1px dashed rgba(255,255,255,.3)}
 .chip:active{transform:scale(.9)}.chip:hover{transform:scale(1.08)}
-.chip.c5  {background:radial-gradient(circle at 35% 35%,#f87171,#dc2626)}
-.chip.c10 {background:radial-gradient(circle at 35% 35%,#60a5fa,#2563eb)}
-.chip.c25 {background:radial-gradient(circle at 35% 35%,#4ade80,#16a34a)}
-.chip.c50 {background:radial-gradient(circle at 35% 35%,#c084fc,#7c3aed)}
+.chip.c5{background:radial-gradient(circle at 35% 35%,#f87171,#dc2626)}
+.chip.c10{background:radial-gradient(circle at 35% 35%,#60a5fa,#2563eb)}
+.chip.c25{background:radial-gradient(circle at 35% 35%,#4ade80,#16a34a)}
+.chip.c50{background:radial-gradient(circle at 35% 35%,#c084fc,#7c3aed)}
 .chip.c100{background:radial-gradient(circle at 35% 35%,#94a3b8,#334155);border-color:var(--gold)}
-
 .bet-row{display:flex;justify-content:space-between;align-items:center}
 .bet-val{font-family:var(--font2);font-size:22px;color:var(--gold2)}
-.btn-sm{background:rgba(255,255,255,0.07);border:1px solid var(--border);border-radius:8px;padding:5px 11px;color:rgba(240,232,216,.5);font-size:12px}
-
-.actions{display:grid;gap:8px;grid-template-columns:1fr 1fr}
-.btn-action{padding:13px;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--font2);transition:transform .1s}
+.btn-sm{background:rgba(255,255,255,.07);border:1px solid var(--border);border-radius:8px;padding:5px 11px;color:rgba(240,232,216,.5);font-size:12px}
+.actions{display:grid;gap:8px}
+.btn-action{padding:13px;border-radius:10px;font-size:15px;font-weight:700;font-family:var(--font2);transition:transform .1s;border:none}
 .btn-action:active{transform:scale(.97)}.btn-action:disabled{opacity:.3;cursor:default}
-.btn-deal  {background:linear-gradient(135deg,#166534,var(--green));color:#fff;grid-column:1/-1}
-.btn-hit   {background:linear-gradient(135deg,#92400e,var(--gold));color:#111}
-.btn-stand {background:linear-gradient(135deg,#991b1b,var(--red));color:#fff}
-.btn-double{background:linear-gradient(135deg,#1e3a8a,var(--blue));color:#fff;font-size:13px;grid-column:1/-1}
-
+.btn-deal{background:linear-gradient(135deg,#166534,var(--green));color:#fff}
+.btn-hit{background:linear-gradient(135deg,#92400e,var(--gold));color:#111}
+.btn-stand{background:linear-gradient(135deg,#991b1b,var(--red));color:#fff}
+.btn-double{background:linear-gradient(135deg,#1e3a8a,var(--blue));color:#fff;font-size:13px}
 .hidden{display:none!important}
-
-/* ── TOAST ── */
-#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:var(--cream);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100;white-space:nowrap;backdrop-filter:blur(8px);border:1px solid var(--border)}
+#toast{position:fixed;bottom:80px;left:50%;transform:translateX(-50%);background:rgba(0,0,0,.85);color:var(--cream);padding:8px 18px;border-radius:20px;font-size:13px;opacity:0;transition:opacity .3s;pointer-events:none;z-index:100;white-space:nowrap;border:1px solid var(--border)}
 #toast.show{opacity:1}
-
-/* ── LOADING ── */
 #loading{position:fixed;inset:0;background:var(--bg);display:flex;align-items:center;justify-content:center;z-index:200;flex-direction:column;gap:12px}
 .spinner{width:36px;height:36px;border:3px solid var(--border);border-top-color:var(--gold);border-radius:50%;animation:spin .7s linear infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 #loading p{color:rgba(240,232,216,.4);font-size:13px}
+.loading-cards{opacity:.4;pointer-events:none}
 </style>
 </head>
 <body>
-
 <div id="loading"><div class="spinner"></div><p>Завантаження...</p></div>
 <div id="toast"></div>
 
-<!-- ══════════════════ LOBBY ══════════════════ -->
+<!-- LOBBY -->
 <div class="screen" id="screen-lobby">
   <div class="header">
     <div class="logo">TG<span>Casino</span></div>
     <div class="balance-chip">💰 <span id="hdr-balance">0</span></div>
   </div>
   <div class="lobby-body">
-
     <div class="user-card">
       <div class="user-info">
         <h3 id="lobby-name">Гравець</h3>
@@ -157,68 +102,28 @@ button{cursor:pointer;border:none;font-family:var(--font)}
         <div class="label">монет</div>
       </div>
     </div>
-
     <div>
       <div class="section-title">Ігри</div>
       <div class="games-grid">
-
         <div class="game-card available" onclick="openBlackjack()">
           <span class="badge live">Доступно</span>
-          <div class="icon">🃏</div>
-          <div class="name">Блекджек</div>
-          <div class="desc">21 очко</div>
+          <div class="icon">🃏</div><div class="name">Блекджек</div><div class="desc">21 очко</div>
         </div>
-
-        <div class="game-card soon">
-          <span class="badge soon">Скоро</span>
-          <div class="icon">🎰</div>
-          <div class="name">Слоти</div>
-          <div class="desc">Coming Soon</div>
-        </div>
-
-        <div class="game-card soon">
-          <span class="badge soon">Скоро</span>
-          <div class="icon">🎲</div>
-          <div class="name">Рулетка</div>
-          <div class="desc">Coming Soon</div>
-        </div>
-
-        <div class="game-card soon">
-          <span class="badge soon">Скоро</span>
-          <div class="icon">🂡</div>
-          <div class="name">Дурак</div>
-          <div class="desc">Coming Soon</div>
-        </div>
-
-        <div class="game-card soon">
-          <span class="badge soon">Скоро</span>
-          <div class="icon">♟️</div>
-          <div class="name">Шахи</div>
-          <div class="desc">Coming Soon</div>
-        </div>
-
-        <div class="game-card soon">
-          <span class="badge soon">Скоро</span>
-          <div class="icon">🃏</div>
-          <div class="name">Покер</div>
-          <div class="desc">Coming Soon</div>
-        </div>
-
+        <div class="game-card soon"><span class="badge soon-b">Скоро</span><div class="icon">🎰</div><div class="name">Слоти</div><div class="desc">Coming Soon</div></div>
+        <div class="game-card soon"><span class="badge soon-b">Скоро</span><div class="icon">🎲</div><div class="name">Рулетка</div><div class="desc">Coming Soon</div></div>
+        <div class="game-card soon"><span class="badge soon-b">Скоро</span><div class="icon">🂡</div><div class="name">Дурак</div><div class="desc">Coming Soon</div></div>
+        <div class="game-card soon"><span class="badge soon-b">Скоро</span><div class="icon">♟️</div><div class="name">Шахи</div><div class="desc">Coming Soon</div></div>
+        <div class="game-card soon"><span class="badge soon-b">Скоро</span><div class="icon">🃏</div><div class="name">Покер</div><div class="desc">Coming Soon</div></div>
       </div>
     </div>
-
     <div class="bonus-card" onclick="claimBonus()">
-      <div class="bonus-left">
-        <h4>🎁 Щотижневий бонус</h4>
-        <p>+500 монет безкоштовно</p>
-      </div>
+      <div class="bonus-left"><h4>🎁 Щотижневий бонус</h4><p>+500 монет безкоштовно</p></div>
       <div class="bonus-btn">Забрати</div>
     </div>
-
   </div>
 </div>
 
-<!-- ══════════════════ BLACKJACK ══════════════════ -->
+<!-- BLACKJACK -->
 <div class="screen" id="screen-bj">
   <div class="bj-body">
     <div class="bj-header">
@@ -226,24 +131,17 @@ button{cursor:pointer;border:none;font-family:var(--font)}
       <div class="bj-title">Блекджек</div>
       <div class="bj-balance">💰 <span id="bj-balance">0</span></div>
     </div>
-
-    <!-- Dealer -->
     <div class="zone">
       <div class="zone-label">Дилер <span class="score" id="dealer-score"></span></div>
       <div class="cards-row" id="dealer-cards"></div>
     </div>
-
     <div class="bj-message"><div id="bj-msg"></div></div>
-
-    <!-- Player -->
     <div class="zone">
       <div class="zone-label">Ваші карти <span class="score" id="player-score"></span></div>
       <div class="cards-row" id="player-cards"></div>
     </div>
-
-    <!-- Bottom -->
     <div class="bj-bottom">
-      <!-- BETTING PHASE -->
+      <!-- Фаза ставки -->
       <div id="phase-bet">
         <div class="chips">
           <div class="chip c5"   onclick="addBet(5)">$5</div>
@@ -253,18 +151,25 @@ button{cursor:pointer;border:none;font-family:var(--font)}
           <div class="chip c100" onclick="addBet(100)">$100</div>
         </div>
         <div class="bet-row">
-          <div>
-            <div style="font-size:11px;color:rgba(240,232,216,.4);margin-bottom:2px">СТАВКА</div>
-            <div class="bet-val">$<span id="bet-display">0</span></div>
-          </div>
+          <div><div style="font-size:11px;color:rgba(240,232,216,.4);margin-bottom:2px">СТАВКА</div>
+          <div class="bet-val">$<span id="bet-display">0</span></div></div>
           <button class="btn-sm" onclick="clearBet()">✕ Скасувати</button>
         </div>
         <div class="actions" style="grid-template-columns:1fr">
-          <button class="btn-action btn-deal" id="btn-deal" onclick="playRound()" disabled>Роздати карти</button>
+          <button class="btn-action btn-deal" id="btn-deal" onclick="startRound()" disabled>Роздати карти</button>
         </div>
       </div>
-
-      <!-- RESULT PHASE -->
+      <!-- Фаза гри -->
+      <div id="phase-play" class="hidden">
+        <div class="actions" style="grid-template-columns:1fr 1fr">
+          <button class="btn-action btn-hit"   id="btn-hit"   onclick="doHit()">Ще карту</button>
+          <button class="btn-action btn-stand" id="btn-stand" onclick="doStand()">Стоп</button>
+        </div>
+        <div class="actions" style="grid-template-columns:1fr">
+          <button class="btn-action btn-double" id="btn-double" onclick="doDouble()">Подвоїти ×2</button>
+        </div>
+      </div>
+      <!-- Фаза результату -->
       <div id="phase-result" class="hidden">
         <div class="actions" style="grid-template-columns:1fr">
           <button class="btn-action btn-deal" onclick="resetRound()">Нова роздача ▶</button>
@@ -275,86 +180,86 @@ button{cursor:pointer;border:none;font-family:var(--font)}
 </div>
 
 <script>
-// ── Telegram ──────────────────────────────────────────────────────────────
-const tg   = window.Telegram?.WebApp;
-const tgUser = tg?.initDataUnsafe?.user || {};
+const tg      = window.Telegram?.WebApp;
+const tgUser  = tg?.initDataUnsafe?.user || {};
 if(tg){ tg.ready(); tg.expand(); tg.setHeaderColor('#0a0a0f'); tg.setBackgroundColor('#0a0a0f'); }
 
-const TG_ID     = tgUser.id        || 12345;  // fallback для тестування в браузері
-const USERNAME  = tgUser.username  || "test";
-const FIRSTNAME = tgUser.first_name|| "Гравець";
-const API       = "";  // порожньо = той самий сервер (відносний шлях)
+const TG_ID    = tgUser.id         || 0;
+const USERNAME = tgUser.username   || "";
+const FNAME    = tgUser.first_name || "Гравець";
 
-// ── State ─────────────────────────────────────────────────────────────────
-let balance = 0, bet = 0;
-const RED_SUITS = new Set(["♥","♦"]);
+let balance = 0, bet = 0, gameActive = false;
+const RED = new Set(["♥","♦"]);
 
-// ── Init ──────────────────────────────────────────────────────────────────
+// ── API ────────────────────────────────────────────────────────────────────
+async function api(path, body=null){
+  const opts = body
+    ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}
+    : {};
+  const r = await fetch(path, opts);
+  if(!r.ok){ const e=await r.json().catch(()=>({detail:'Помилка'})); throw new Error(e.detail||'Помилка'); }
+  return r.json();
+}
+
+// ── Init ───────────────────────────────────────────────────────────────────
 async function init(){
   try{
-    const r = await api(`/api/get_user?tg_id=${TG_ID}&username=${encodeURIComponent(USERNAME)}&first_name=${encodeURIComponent(FIRSTNAME)}`);
+    const r = await api(`/api/get_user?tg_id=${TG_ID}&username=${encodeURIComponent(USERNAME)}&first_name=${encodeURIComponent(FNAME)}`);
     balance = r.balance;
     updateBalance();
-    document.getElementById('lobby-name').textContent = r.first_name || FIRSTNAME;
-    const bj = r.stats?.blackjack || {};
-    const p  = bj.played || 0;
-    const w  = bj.won    || 0;
-    document.getElementById('lobby-stats').textContent =
-      p ? `Блекджек: ${p} ігор, ${w} виграшів` : "Ще не грав";
-  }catch(e){
-    showToast("Не вдалось завантажити профіль");
-  }
+    document.getElementById('lobby-name').textContent = r.first_name || FNAME;
+    const bj = r.stats?.blackjack||{};
+    const p=bj.played||0, w=bj.won||0;
+    document.getElementById('lobby-stats').textContent = p ? `Блекджек: ${p} ігор · ${w} виграшів` : "Ще не грав";
+
+    // Перевірити чи є активна сесія (наприклад після перезавантаження)
+    const sess = await api(`/api/blackjack/session?tg_id=${TG_ID}`);
+    if(sess.active){
+      document.getElementById('loading').style.display='none';
+      showScreen('bj');
+      applySession(sess);
+      return;
+    }
+  }catch(e){ showToast("Помилка завантаження"); }
   document.getElementById('loading').style.display='none';
   showScreen('lobby');
 }
 
-// ── API ───────────────────────────────────────────────────────────────────
-async function api(path, body=null){
-  const opts = body
-    ? {method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(body)}
-    : {method:'GET'};
-  const r = await fetch(API + path, opts);
-  if(!r.ok){ const e=await r.json(); throw new Error(e.detail||'Помилка'); }
-  return r.json();
-}
-
-// ── Balance ───────────────────────────────────────────────────────────────
-function updateBalance(){
+// ── Balance ────────────────────────────────────────────────────────────────
+function updateBalance(newBal){
+  if(newBal !== undefined) balance = newBal;
   document.getElementById('hdr-balance').textContent   = balance;
   document.getElementById('lobby-balance').textContent = balance;
   document.getElementById('bj-balance').textContent    = balance;
 }
 
-// ── Screens ───────────────────────────────────────────────────────────────
+// ── Screens ────────────────────────────────────────────────────────────────
 function showScreen(name){
   document.querySelectorAll('.screen').forEach(s=>s.classList.remove('active'));
   document.getElementById('screen-'+name).classList.add('active');
 }
 function openBlackjack(){ resetRound(false); showScreen('bj'); }
-function goLobby(){ showScreen('lobby'); }
+function goLobby(){
+  if(gameActive){ showToast("Спочатку завершіть гру!"); return; }
+  showScreen('lobby');
+}
 
-// ── Bonus ─────────────────────────────────────────────────────────────────
+// ── Bonus ──────────────────────────────────────────────────────────────────
 async function claimBonus(){
   try{
-    const r = await api('/api/bonus',{tg_id:TG_ID,username:USERNAME,first_name:FIRSTNAME});
-    if(r.ok){
-      balance = r.balance;
-      updateBalance();
-      showToast("🎁 +500 монет!",2500);
-      haptic('success');
-    } else {
-      showToast(r.message, 3000);
-    }
+    const r = await api('/api/bonus',{tg_id:TG_ID,username:USERNAME,first_name:FNAME});
+    if(r.ok){ updateBalance(r.balance); showToast("🎁 +500 монет!"); haptic('success'); }
+    else showToast(r.message,3000);
   }catch(e){ showToast(e.message); }
 }
 
-// ── BLACKJACK ─────────────────────────────────────────────────────────────
+// ── BETTING ────────────────────────────────────────────────────────────────
 function addBet(amt){
-  const add = Math.min(amt, balance - bet);
+  const add = Math.min(amt, balance-bet);
   if(add<=0){ showToast("Недостатньо монет"); return; }
-  bet += add;
-  document.getElementById('bet-display').textContent = bet;
-  document.getElementById('btn-deal').disabled = false;
+  bet+=add;
+  document.getElementById('bet-display').textContent=bet;
+  document.getElementById('btn-deal').disabled=false;
   haptic('selection');
 }
 function clearBet(){
@@ -363,72 +268,115 @@ function clearBet(){
   document.getElementById('btn-deal').disabled=true;
 }
 
-async function playRound(){
+// ── GAME ACTIONS ───────────────────────────────────────────────────────────
+async function startRound(){
   if(bet<=0) return;
-  document.getElementById('btn-deal').disabled=true;
-  clearCards();
-  setMsg('');
-
+  setLoading(true);
   try{
-    const r = await api('/api/blackjack/play',{
-      tg_id:TG_ID, bet, username:USERNAME, first_name:FIRSTNAME
-    });
+    const r = await api('/api/blackjack/start',{tg_id:TG_ID,bet,username:USERNAME,first_name:FNAME});
+    gameActive = true;
+    applySession(r);
+    haptic('medium');
+  }catch(e){ showToast(e.message); }
+  setLoading(false);
+}
 
-    // Показати карти
-    renderCards('player-cards', r.player_hand);
-    renderCards('dealer-cards', r.dealer_hand);
-    document.getElementById('player-score').textContent = r.player_total;
-    document.getElementById('dealer-score').textContent = r.dealer_total;
+async function doHit(){
+  setLoading(true);
+  try{
+    const r = await api('/api/blackjack/hit',{tg_id:TG_ID});
+    applySession(r);
+    haptic('light');
+  }catch(e){ showToast(e.message); }
+  setLoading(false);
+}
 
-    balance = r.balance;
-    updateBalance();
+async function doStand(){
+  setLoading(true);
+  try{
+    const r = await api('/api/blackjack/stand',{tg_id:TG_ID});
+    applySession(r);
+    haptic('medium');
+  }catch(e){ showToast(e.message); }
+  setLoading(false);
+}
 
-    // Повідомлення
-    const cls = r.result==='win'?'win':r.result==='lose'?'lose':'draw';
-    const isBJ = r.message?.includes('Блекджек') && r.result==='win';
-    setMsg(r.message, isBJ?'bj':cls);
-    haptic(r.result==='win'?'success':r.result==='lose'?'error':'warning');
+async function doDouble(){
+  setLoading(true);
+  try{
+    const r = await api('/api/blackjack/double',{tg_id:TG_ID});
+    applySession(r);
+    haptic('heavy');
+  }catch(e){ showToast(e.message); }
+  setLoading(false);
+}
 
-    // Показати кнопку нового раунду
-    document.getElementById('phase-bet').classList.add('hidden');
-    document.getElementById('phase-result').classList.remove('hidden');
+// ── Apply session state ────────────────────────────────────────────────────
+function applySession(s){
+  // Оновити баланс
+  if(s.balance !== undefined) updateBalance(s.balance);
+
+  // Намалювати карти
+  renderCards('player-cards', s.player_hand);
+  renderCards('dealer-cards', s.dealer_hand);
+
+  // Рахунок
+  document.getElementById('player-score').textContent = s.player_total||'';
+  document.getElementById('dealer-score').textContent =
+    s.done ? (s.dealer_total||'') : '?';
+
+  if(s.done){
+    // Показати результат
+    gameActive = false;
+    const cls = s.result==='win'?'win':s.result==='lose'?'lose':'draw';
+    const isBJ = s.message?.includes('Блекджек')&&s.result==='win';
+    setMsg(s.message, isBJ?'bj':cls);
+    haptic(s.result==='win'?'success':s.result==='lose'?'error':'warning');
+
+    show('phase-result'); hide('phase-bet'); hide('phase-play');
     bet=0;
-
-  }catch(e){
-    showToast(e.message);
-    document.getElementById('btn-deal').disabled=false;
+    document.getElementById('bet-display').textContent=0;
+  } else {
+    // Гра триває
+    setMsg('');
+    show('phase-play'); hide('phase-bet'); hide('phase-result');
+    // Подвоєння доступне тільки з двома картами
+    document.getElementById('btn-double').classList.toggle('hidden', !s.can_double);
   }
 }
 
-function resetRound(showBet=true){
-  clearCards();
-  setMsg('');
-  bet=0;
+function resetRound(showBetPhase=true){
+  clearCards(); setMsg(''); bet=0; gameActive=false;
   document.getElementById('bet-display').textContent=0;
   document.getElementById('btn-deal').disabled=true;
   document.getElementById('player-score').textContent='';
   document.getElementById('dealer-score').textContent='';
-  if(showBet){
-    document.getElementById('phase-result').classList.add('hidden');
-    document.getElementById('phase-bet').classList.remove('hidden');
+  if(showBetPhase){
+    show('phase-bet'); hide('phase-play'); hide('phase-result');
   }
 }
 
-// ── Cards ─────────────────────────────────────────────────────────────────
-function renderCards(containerId, hands){
-  const el = document.getElementById(containerId);
+// ── Cards ──────────────────────────────────────────────────────────────────
+function renderCards(id, hand){
+  const el=document.getElementById(id);
   el.innerHTML='';
-  // hands = ["A♠","K♥",...]
-  hands.forEach((str,i)=>{
-    const suit = str.slice(-1) === '?' ? '?' : str.slice(-1);
-    const rank = str.slice(0,-1);
-    const card = document.createElement('div');
-    card.className = 'card ' + (RED_SUITS.has(suit)?'red':'black');
-    card.style.animationDelay = (i*0.07)+'s';
-    card.innerHTML = `<div class="ct">${rank}<br><small>${suit}</small></div>
-                      <div class="cs">${suit}</div>
-                      <div class="cb">${rank}<br><small>${suit}</small></div>`;
-    el.appendChild(card);
+  (hand||[]).forEach((str,i)=>{
+    if(str==='??'){
+      const c=document.createElement('div');
+      c.className='card back';
+      c.style.animationDelay=(i*.07)+'s';
+      el.appendChild(c); return;
+    }
+    // Парсимо "A♠", "10♥" тощо
+    const suit = [...str].find(ch=>'♠♥♦♣'.includes(ch))||'';
+    const rank = str.replace(suit,'');
+    const c=document.createElement('div');
+    c.className='card '+(RED.has(suit)?'red':'black');
+    c.style.animationDelay=(i*.07)+'s';
+    c.innerHTML=`<div class="ct">${rank}<br><small>${suit}</small></div>
+                 <div class="cs">${suit}</div>
+                 <div class="cb">${rank}<br><small>${suit}</small></div>`;
+    el.appendChild(c);
   });
 }
 function clearCards(){
@@ -436,15 +384,23 @@ function clearCards(){
   document.getElementById('dealer-cards').innerHTML='';
 }
 
-// ── UI helpers ────────────────────────────────────────────────────────────
-function setMsg(txt, cls=''){
+// ── Helpers ────────────────────────────────────────────────────────────────
+function setMsg(txt,cls=''){
   const el=document.getElementById('bj-msg');
   el.textContent=txt; el.className='bj-msg '+(cls||'');
 }
+function setLoading(on){
+  ['btn-hit','btn-stand','btn-double','btn-deal'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.disabled=on;
+  });
+}
+function show(...ids){ ids.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.remove('hidden');}); }
+function hide(...ids){ ids.forEach(id=>{const el=document.getElementById(id);if(el)el.classList.add('hidden');}); }
 function showToast(msg,dur=2000){
   const t=document.getElementById('toast');
   t.textContent=msg; t.classList.add('show');
-  setTimeout(()=>t.classList.remove('show'),dur);
+  clearTimeout(t._t); t._t=setTimeout(()=>t.classList.remove('show'),dur);
 }
 function haptic(type){
   if(!tg?.HapticFeedback) return;
@@ -453,7 +409,6 @@ function haptic(type){
   else tg.HapticFeedback.impactOccurred(type||'light');
 }
 
-// ── START ─────────────────────────────────────────────────────────────────
 init();
 </script>
 </body>
