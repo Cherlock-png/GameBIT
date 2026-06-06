@@ -1,1 +1,2 @@
-web: uvicorn server:app --host 0.0.0.0 --port $PORT --app-dir server
+web: uvicorn main:app --host 0.0.0.0 --port $PORT
+bot: python bot/bot_casino.py
