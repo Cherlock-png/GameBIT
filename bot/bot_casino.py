@@ -1,20 +1,20 @@
 """
-bot.py — Telegram бот на python-telegram-bot 20.7
-Запуск: python bot.py
+bot.py — Telegram бот для Railway
+Не потребує локального запуску — працює на сервері
 """
-import asyncio
 import logging
-import sys, os
-sys.path.insert(0, os.path.join(os.path.dirname(__file__), "..", "server"))
+import os
+import sys
 
+# Шлях до server/ — на Railway файли лежать поруч
+sys.path.insert(0, os.path.join(os.path.dirname(os.path.abspath(__file__)), "..", "server"))
+
+from database import init_db, get_or_create_user, claim_bonus, get_stats
 from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo
 from telegram.ext import Application, CommandHandler, CallbackQueryHandler, ContextTypes
-from database import init_db, get_or_create_user, claim_bonus, get_stats
 
-# ══════════════════════════════════════════════════════════════
-BOT_TOKEN  = "токен"
-WEBAPP_URL = "авва"
-# ══════════════════════════════════════════════════════════════
+BOT_TOKEN  = os.environ.get("BOT_TOKEN", "")
+WEBAPP_URL = os.environ.get("WEBAPP_URL", "")
 
 logging.basicConfig(level=logging.INFO)
 
@@ -79,22 +79,28 @@ async def cb_handler(update: Update, ctx: ContextTypes.DEFAULT_TYPE):
             "<b>Ігри:</b>\n"
             "• 🃏 Блекджек — доступний!\n"
             "• 🎰 Слоти — скоро\n"
-            "• 🎲 Рулетка — скоро\n"
-            "• 🃏 Дурак онлайн — скоро\n\n"
+            "• 🎲 Рулетка — скоро\n\n"
             "<b>Монети:</b>\n"
             "• Старт: 500 монет\n"
-            "• Щотижня безкоштовний бонус +500\n\n"
+            "• Щотижня бонус +500\n\n"
             "/start — головне меню",
             parse_mode="HTML", reply_markup=main_menu_kb()
         )
 
-async def main():
+async def post_init(application: Application):
     await init_db()
-    app = Application.builder().token(BOT_TOKEN).build()
+
+def main():
+    if not BOT_TOKEN:
+        raise ValueError("BOT_TOKEN не встановлено! Додай у Railway Variables.")
+    if not WEBAPP_URL:
+        raise ValueError("WEBAPP_URL не встановлено! Додай у Railway Variables.")
+
+    app = Application.builder().token(BOT_TOKEN).post_init(post_init).build()
     app.add_handler(CommandHandler("start", cmd_start))
     app.add_handler(CallbackQueryHandler(cb_handler))
-    logging.info("Бот запущено...")
-    await app.run_polling(skip_updates=True)
+    logging.info("Бот запущено на Railway...")
+    app.run_polling(drop_pending_updates=True)
 
 if __name__ == "__main__":
-    asyncio.run(main())
+    main()
